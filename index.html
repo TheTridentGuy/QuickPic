@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickPic Scaler</title>
+    <style>
+        * {
+            font-family: sans-serif;
+            font-size: xx-large;
+        }
+        td {
+            padding-left: 2vmin;
+            padding-top: 1vmin;
+        }
+        button {
+            width: max-content;
+            padding: 1vmin;
+        }
+    </style>
+    <script>
+        function onFileSelected(event) {
+            var selectedFile = document.getElementById("image").files[0];
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                newwin = open();
+                newwin.document.write(
+                    `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scaled Image</title>
+    <style>
+        * {
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <img src="${event.target.result}" style="height:${document.getElementById("hnum").value+document.getElementById("hunit").value}; width:${document.getElementById("wnum").value+document.getElementById("wunit").value};">
+</body>
+</html>
+                    `
+                );
+            };
+            reader.readAsDataURL(selectedFile);
+        }
+    </script>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>File:</td>
+            <td><input type="file" id="image"></td>
+        </tr>
+        <tr>
+            <td>Height:</td>
+            <td><input type="number" id="hnum" value="2"></td>
+            <td style="padding: 0px;">
+                <select name="hunit" id="hunit">
+                    <option>in</option>
+                    <option>cm</option>
+                    <option>vmin</option>
+                    <option>vm</option>
+                    <option>px</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Width:</td>
+            <td><input type="number" id="wnum" value="2"></td>
+            <td style="padding: 0px;">
+                <select name="wunit" id="wunit">
+                    <option>in</option>
+                    <option>cm</option>
+                    <option>vmin</option>
+                    <option>vm</option>
+                    <option>px</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><button onclick="onFileSelected();">Scale File</button></td>
+        </tr>
+    </table>
+</body>
+</html>
